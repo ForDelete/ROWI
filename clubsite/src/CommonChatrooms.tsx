@@ -1,6 +1,7 @@
 import {Box,Card,CardBody,Text} from "grommet";
 import React,{useEffect,useState} from "react";
 import {Chatroom} from "./ChatLobby";
+import {ipAddress} from "./App";
 
 
 export function CommonChatrooms()
@@ -10,7 +11,7 @@ export function CommonChatrooms()
               {
                   fetch
                   (
-                      `http://192.168.43.37:8080/freechats`
+                      `http://${ipAddress}:8080/freechats`
                   ).then
                    (
                        (response)=>

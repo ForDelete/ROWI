@@ -1,6 +1,7 @@
 import React,{useEffect,useState}         from "react";
 import {Box,Button,Header,Text,TextInput} from "grommet";
 import {Chatroom}                         from "./ChatLobby";
+import {ipAddress}                        from "./App";
 
 interface Message
 {
@@ -19,7 +20,7 @@ export const Chat=({id,name,userId,isManager}:{id:number,name:string,userId:numb
 	{
 		fetch
 		(
-			`http://192.168.43.37:8080/chat/id=${id}`
+			`http://${ipAddress}:8080/chat/id=${id}`
 		).then
 		 (
 			 (response)=>
@@ -64,7 +65,7 @@ export const Chat=({id,name,userId,isManager}:{id:number,name:string,userId:numb
 				{
 					fetch
 					(
-						`http://192.168.43.37:8080/addMessage?chatRoom=${id}&sender=${id}&message=${input}`
+						`http://${ipAddress}:8080/addMessage?chatRoom=${id}&sender=${id}&message=${input}`
 					);
 				}}>SEND</Button>
 			</Box>

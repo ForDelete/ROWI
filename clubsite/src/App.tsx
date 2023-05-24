@@ -9,7 +9,7 @@ import load=Simulate.load;
 
 let showLogin=true;
 
-let ipAddress=""
+export let ipAddress="192.168.43.1";
 
 const App=({socket}:{socket:WebSocket})=>
 {

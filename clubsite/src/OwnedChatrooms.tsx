@@ -1,6 +1,7 @@
 import {Box,Card,CardBody,Text}   from "grommet";
 import React,{useEffect,useState} from "react";
 import {Chatroom}                 from "./ChatLobby";
+import {ipAddress}                from "./App";
 
 
 export function OwnedChatrooms({userId,setActiveChat}:{userId:number|null,setActiveChat:Function})
@@ -11,7 +12,7 @@ export function OwnedChatrooms({userId,setActiveChat}:{userId:number|null,setAct
                   if(!userId) return;
                   fetch
                   (
-                      `http://192.168.43.37:8080/chatrooms/user=${userId}`
+                      `http://${ipAddress}/chatrooms/user=${userId}`
                   ).then
                    (
                        (response)=>

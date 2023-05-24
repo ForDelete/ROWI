@@ -3,6 +3,7 @@ import React,{useEffect,useState} from "react";
 import {Chat}                     from "./Chat";
 import {OwnedChatrooms} from "./OwnedChatrooms";
 import {CommonChatrooms} from "./CommonChatrooms";
+import {ipAddress}                from "./App";
 
 export class Chatroom
 {
@@ -21,31 +22,31 @@ export const ChatLobby=({id}:{id:number})=>
     let [isManager,setIsManager]=useState(false);
 
 
-    // useEffect(()=>
-    //           {
-    //               if(!chat.user_id)
-    //               {
-    //                   setIsManager(false);
-    //                   return;
-    //               }
-    //               fetch
-    //               (
-    //                   `http://192.168.43.37:8080/isManager/id=${chat.user_id}`
-    //               ).then
-    //                (
-    //                    (response)=>
-    //                    {
-    //                        if(!response.ok) throw new Error(`HTTP error: ${response.status}`);
-    //                        return response.text();
-    //                    }
-    //                ).then
-    //                (
-    //                    (text)=>
-    //                    {
-    //                        setIsManager(text==="true");
-    //                    }
-    //                );
-    //           },[chat.user_id]);
+    useEffect(()=>
+              {
+                  if(!chat.user_id)
+                  {
+                      setIsManager(false);
+                      return;
+                  }
+                  fetch
+                  (
+                      `http://${ipAddress}:8080/isManager/id=${chat.user_id}`
+                  ).then
+                   (
+                       (response)=>
+                       {
+                           if(!response.ok) throw new Error(`HTTP error: ${response.status}`);
+                           return response.text();
+                       }
+                   ).then
+                   (
+                       (text)=>
+                       {
+                           setIsManager(text==="true");
+                       }
+                   );
+              },[chat.user_id]);
 
     return (
         <Grommet full={true}>

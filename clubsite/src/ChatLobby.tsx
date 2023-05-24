@@ -53,7 +53,7 @@ export const ChatLobby=({id}:{id:number})=>
                 <Box align={"start"}>
                     <OwnedChatrooms userId={chat.user_id} setActiveChat={setChat}/>
                 </Box>
-                <Chat id={chat.id} userId={chat.user_id} isManager={isManager}/>
+                <Chat id={chat.id} name={chat.chatName} userId={chat.user_id} isManager={isManager}/>
                 <Box align={"end"}>
                     {isManager?<CommonChatrooms/>:<Box/>}
                 </Box>

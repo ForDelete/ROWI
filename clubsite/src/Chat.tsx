@@ -1,6 +1,6 @@
-import React,{useEffect,useState}  from "react";
-import {Box,Button,Text,TextInput} from "grommet";
-import {Chatroom}                  from "./ChatLobby";
+import React,{useEffect,useState}         from "react";
+import {Box,Button,Header,Text,TextInput} from "grommet";
+import {Chatroom}                         from "./ChatLobby";
 
 interface Message
 {
@@ -11,7 +11,7 @@ interface Message
 	time:string
 }
 
-export const Chat=({id,userId,isManager}:{id:number,userId:number|null,isManager:boolean})=>
+export const Chat=({id,name,userId,isManager}:{id:number,name:string,userId:number|null,isManager:boolean})=>
 {
 	const [messages,setMessages]=useState(new Array<Message>());
 	const [input,setInput]=useState("");
@@ -38,6 +38,9 @@ export const Chat=({id,userId,isManager}:{id:number,userId:number|null,isManager
 
 	return (
 		<Box>
+			<Header>
+				<Text>{name}</Text>
+			</Header>
 			<Box>
 				{
 					messages.map

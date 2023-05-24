@@ -9,6 +9,8 @@ import load=Simulate.load;
 
 let showLogin=true;
 
+let ipAddress=""
+
 const App=({socket}:{socket:WebSocket})=>
 {
     function goToChats()

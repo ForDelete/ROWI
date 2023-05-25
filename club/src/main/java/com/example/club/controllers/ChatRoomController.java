@@ -5,7 +5,9 @@ import com.example.club.models.Employee;
 import com.example.club.models.Message;
 import com.example.club.models.User;
 import com.example.club.services.ChatRoomService;
+import com.example.club.services.EmployeeService;
 import com.example.club.services.MessageService;
+import com.example.club.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,35 +21,51 @@ public class ChatRoomController {
     ChatRoomService chatRoomService;
     @Autowired
     MessageService messageService;
+    @Autowired
+    EmployeeService employeeService;
+    @Autowired
+    UserService userService;
 
-    @GetMapping("/chatrooms")
-    public ResponseEntity<List<ChatRoom>> FindAll(){
-        return ResponseEntity.ok(chatRoomService.FindAll());
-    }
-//    @GetMapping("/addChatroom")
-//    public void AddChatRoom(@RequestParam("chatName") String chatName, @RequestParam("user") User user, @RequestParam("employee") Employee employee, @RequestParam("speciality") Integer speciality){
-//        chatRoomService.AddChatRoom(chatName, user, employee, speciality);
-//    }
-    @PostMapping("/addChatroom")
-    public void AddChatRoom(@RequestParam("chatName") String chatName, @RequestParam("user") User user, @RequestParam("speciality") Integer speciality){
-        chatRoomService.AddChatRoom(chatName, user, speciality);
-    }
-    @PostMapping("/setEmployee")
-    public void SetEmployee(@RequestParam("id") Integer id, @RequestParam("chatName") String chatName, @RequestParam("user") User user,@RequestParam("employee") Employee newEmployee, @RequestParam("speciality") Integer speciality){
-        chatRoomService.SetEmployee(id,chatName,user, newEmployee,speciality);
-    }
-    @PostMapping("/setSpeciality")
-    public void SetSpeciality(@RequestParam("id") Integer id, @RequestParam("chatName") String chatName, @RequestParam("user") User user,@RequestParam("employee") Employee employee, @RequestParam("speciality") Integer newSpeciality){
-        chatRoomService.SetSpeciality(id,chatName,user, employee,newSpeciality);
+
+
+    @GetMapping("/addChatroom")//Создать чат(Создаёт юзер)
+    public void AddChatRoom(@RequestParam("chatName") String chatName, @RequestParam("user_id") Integer user_id){
+        chatRoomService.AddChatRoom(chatName, user_id);
     }
 
-//    @GetMapping("/Chat")
-//    public ResponseEntity<ChatRoom> OpenChat(@RequestParam("id") Integer id){
-//        return ResponseEntity.ok(chatRoomService.GetChatRoomByID(id));
-//    }
-@GetMapping("/Chat")
-public ResponseEntity<List<Message>> OpenChat(@RequestParam("id") ChatRoom id){
-    //return ResponseEntity.ok(chatRoomService.GetChatRoomByID(id));
-    return ResponseEntity.ok(messageService.GetMessagesByChatID(id));
-}
+    @GetMapping("/setEmployee")//Установить ответственного за этот чат менеджера
+    public void SetEmployee(@RequestParam("chat_id") Integer id,@RequestParam("employee") Integer newEmployee){
+        ChatRoom chatRoom = chatRoomService.FindChatroomById(id);
+        Employee employee = employeeService.FindEmployeeById(newEmployee);
+        chatRoomService.SetEmployee(id,chatRoom.getChatName(),chatRoom.getUser_id(), employee,chatRoom.getSpeciality(),chatRoom.getComplexity());
+    }
+    @GetMapping("/setSpeciality")//Установить новую "тему" вопроса (Перенаправит впрос компетентным специалистам)
+    public void SetSpeciality(@RequestParam("chat_id") Integer id, @RequestParam("speciality") Integer newSpeciality, @RequestParam("laci") Integer laci){
+        ChatRoom chatRoom = chatRoomService.FindChatroomById(id);
+        chatRoomService.SetSpeciality(id,chatRoom.getChatName(),chatRoom.getUser_id(), null, newSpeciality,laci);
+    }
+
+
+
+
+    @GetMapping("/chatrooms/user={id}")//Вернуть все чаты пользователя(Активные)
+    public ResponseEntity<List<ChatRoom>> ShowMyChats(@PathVariable("id") Integer id){
+        User user = userService.FindUserById(id);
+        return ResponseEntity.ok(chatRoomService.GetChatRoomsByID(user.getID()));
+    }
+    @GetMapping("/chatrooms/employee={id}")//Вернуть все чаты менеджера(Активные)
+    public ResponseEntity<List<ChatRoom>> ShowEmployeeChats(@PathVariable("id") Integer id){
+        Employee employee = employeeService.FindEmployeeById(id);
+        return ResponseEntity.ok(chatRoomService.GetEmployeeChatRoomsByID(employee.getID()));
+    }
+    @GetMapping("/freechats/employee={id}")//Вернуть все "свободные чаты" (доступные нам)
+    public ResponseEntity<List<ChatRoom>> ShowFreeChats(@PathVariable("id") Integer id){
+        User user = userService.FindUserById(id);
+        Employee employee = employeeService.FindEmployeeById(user.getID());
+        return ResponseEntity.ok(chatRoomService.GetFreeChats(employee.getSpecialization(),employee.getLaci()));
+    }
+    @GetMapping("/chat/id={id}")//Получить все сообщения чата (по его id)
+    public ResponseEntity<List<Message>> OpenChat(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(messageService.GetMessagesByChatID(id));
+    }
 }

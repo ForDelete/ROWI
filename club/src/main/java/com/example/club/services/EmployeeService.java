@@ -8,16 +8,23 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EmployeeService {
     @Autowired
     EmployeeRepos employeeRepos;
 
-    public List<Employee> FindAll(){
-        return employeeRepos.findAll();
+//    public List<Employee> FindAll(){
+//        return employeeRepos.findAll();
+//    }
+    public void AddEmployee(@Param("employee_id") User employee_id, @Param("specialization") Integer specialization, @Param("laci") Integer laci){
+        employeeRepos.save(new Employee(employee_id, specialization, laci));
     }
-    public void AddEmployee(@Param("employee_id") User employee_id, @Param("product") Integer product){
-        employeeRepos.save(new Employee(employee_id, product));
+    //Hidden
+    public Employee FindEmployeeById(@Param("id") Integer id){
+        return employeeRepos.findAll().stream()
+                .filter(user-> Objects.equals(user.getID(), id))
+                .findAny().orElse(null);
     }
 }

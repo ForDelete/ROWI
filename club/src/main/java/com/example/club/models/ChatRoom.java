@@ -3,6 +3,8 @@ package com.example.club.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+//import javax.persistence.*;
+
 @Table(name = "chatrooms", schema = "public")
 @Data
 @NoArgsConstructor
@@ -24,7 +26,8 @@ public class ChatRoom {
     private Employee current_employee;
 //    @ManyToOne
 //    @JoinColumn(name ="FK_ChatRoom_Speciality")
-    private Integer speciality;
+    private Integer speciality;//Специализация вопроса (Какой специалист нужен)
+    private Integer complexity;//Сложность
 
 //    public ChatRoom(String chatName, User user_id, Employee current_employee, Integer speciality) {
 //        this.chatName = chatName;
@@ -32,25 +35,28 @@ public class ChatRoom {
 //        this.current_employee = current_employee;
 //        this.speciality = speciality;
 //    }
-    public ChatRoom(String chatName, User user_id, Integer speciality) {
+    public ChatRoom(String chatName, User user_id) {
         this.chatName = chatName;
         this.user_id = user_id;
         this.current_employee = null;
-        this.speciality = speciality;
+        this.speciality = 0;
+        this.complexity = 0;
     }
     //SetEmployee
-    public void SetEmployee(Integer id, String chatName, User user_id, Employee newEmployee, Integer speciality) {
-//        this.chatName = chatName;
-//        this.user_id = user_id;
+    public void SetEmployee(Integer id, String chatName, User user_id, Employee newEmployee, Integer speciality, Integer complexity) {
+        this.chatName = chatName;
+        this.user_id = user_id;
         this.current_employee = newEmployee;
-//        this.speciality = speciality;
+        this.speciality = speciality;
+        this.complexity = complexity;
     }
     //SetSpeciality
-    public void SetSpeciality(Integer id, String chatName, User user_id, Employee employee, Integer newSpeciality) {
-//        this.chatName = chatName;
-//        this.user_id = user_id;'
+    public void SetSpeciality(Integer id, String chatName, User user_id, Employee employee, Integer newSpeciality, Integer newComplexity) {
+        this.chatName = chatName;
+        this.user_id = user_id;
         this.current_employee = null;
         this.speciality = newSpeciality;
+        this.complexity = newComplexity;
     }
 
 }

@@ -3,6 +3,8 @@ package com.example.club.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+//import javax.persistence.*;
+
 @Table(name = "users", schema = "public")
 @Data
 @NoArgsConstructor
@@ -16,6 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ID;
     private String name;
+    @Column(unique = true, nullable = false)
     private String login;
     private String password;
 

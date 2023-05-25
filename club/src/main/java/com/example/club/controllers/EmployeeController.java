@@ -18,12 +18,12 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-    @GetMapping("/employees")
-    public ResponseEntity<List<Employee>>FindAll(){
-        return ResponseEntity.ok(employeeService.FindAll());
-    }
+//    @GetMapping("/employees")
+//    public ResponseEntity<List<Employee>>FindAll(){
+//        return ResponseEntity.ok(employeeService.FindAll());
+//    }
     @GetMapping("/addEmployee")
-    public void AddEmployee(@RequestParam("employee_id") User employee_id, @RequestParam("product") Integer product){
-        employeeService.AddEmployee(employee_id,product);
+    public void AddEmployee(@RequestParam("user_id") User user_id, @RequestParam("specialization") Integer specialization, @RequestParam("laci") Integer laci){
+        employeeService.AddEmployee(user_id,specialization, laci);
     }
 }
